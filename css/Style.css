@@ -1,0 +1,85 @@
+.contenedor {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    padding: 20px;
+}
+
+.bg-black{
+    background-color: #1B1B1B;
+}
+
+.btn-grey{
+    background-color: #6A6F74;
+    color: white;
+    font-weight: bold;
+    border-radius: 50px;
+    width: 450px;
+}
+
+.btn-gold{
+    background-color: #A77F49;
+    color: white;
+    font-weight: bold;
+    border-radius: 50px;
+    width: 300px;
+}
+
+.span-input{
+    background-color: #3e3e3e;
+    color: #A77F49;
+    font-weight: bold;
+    border-radius: 50px;
+    border: 0px;
+}
+
+.my-input{
+    background-color: #3e3e3e;
+    color: white;
+    font-weight: bold;
+    border-radius: 50px;
+    border: 0px;
+}
+
+.filtros{
+    background-color: #3e3e3e;
+    color: white;
+    border-radius: 20px;
+    border: 0px;
+    padding: 20px;
+}
+
+.cinta-resumen{
+    background-color: #A77F49;
+    color: white;
+    border-radius: 20px;
+    border: 0px;
+    padding: 20px;
+}
+
+.tab-content{
+    color: white;
+}
+
+.table-head{
+    color: #A77F49;
+    font-weight: bold;
+}
+
+h1{
+    color: #A77F49;
+    font-weight: bold;
+    padding: 10px;
+}
+
+h3{
+    color: white;    
+    font-weight: bold;
+    padding: 10px;
+    padding-bottom: 0px;
+    margin: 0px;
+}
+
+hr{
+    border: 2px solid #6A6F74;
+}
