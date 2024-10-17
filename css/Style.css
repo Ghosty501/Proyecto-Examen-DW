@@ -66,6 +66,19 @@
     font-weight: bold;
 }
 
+.nav-tabs .nav-link {
+    color: white; 
+    
+    border: 0px;
+}
+
+.nav-tabs .nav-link.active {
+    color: #A77F49; 
+    background-color: #1B1B1B;
+    border: 1px solid transparent;
+    
+}
+
 h1{
     color: #A77F49;
     font-weight: bold;
