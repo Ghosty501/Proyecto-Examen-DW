@@ -4,7 +4,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sede = "SELECT id_Sede FROM Asesoria GROUP BY id_Sede";
+$sede = "SELECT Nombre FROM sede GROUP BY id_Sede";
 $result_sede = $conn->query($sede);
 
 $asesor = "SELECT Nombre FROM Asesor";
@@ -49,13 +49,15 @@ $result_categoria = $conn->query($categoria);
                     <?php
                     if ($result_asesor->num_rows > 0) {
                         while ($row = $result_asesor->fetch_assoc()) {
-                            echo "<li><button class='dropdown-item' type='button' onclick='selectOption(\"" . $row["Nombre"] . "\", \"dropdownTalentButton\")'>" . $row["Nombre"] . "</button></li>";
+                            echo "<li><button class='dropdown-item' type='button' onclick='selectOption(\"" . $row["Nombre"] . "\", \"categoryInput\", \"dropdownTalentButton\")'>" . $row["Nombre"] . "</button></li>";
                         }
                     } else {
-                        echo "<li><button class='dropdown-item' type='button'>No hay sedes disponibles</button></li>";
+                        echo "<li><button class='dropdown-item' type='button'>No hay categorías disponibles</button></li>";
                     }
                     ?>
                 </ul>
+                <!-- Campo oculto para almacenar el valor seleccionado -->
+                <input type="hidden" id="TalentInput" value="">
             </div>
             <button id="limpiarBtn" class="btn btn-grey mb-3">
                 <!-- <input class="btn btn-grey" type="submit" value="Limpiar"> -->
@@ -66,38 +68,23 @@ $result_categoria = $conn->query($categoria);
 
         <div class="d-flex gap-3">
             <div class="input-group mb-3">
-                <span class="input-group-text span-input">Sede: </span>
+                <span class="input-group-text span-input">Sede:</span>
                 <button class="btn btn-secondary dropdown-toggle my-input" type="button" id="dropdownSedeButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    Todas las sedes
+                    Seleccione una sede
                 </button>
                 <ul class="dropdown-menu">
                     <?php
                     if ($result_sede->num_rows > 0) {
                         while ($row = $result_sede->fetch_assoc()) {
-                            switch ($row["id_Sede"]) {
-                                case 1:
-                                    $row["id_Sede"] = "México";
-                                    break;
-                                case 4:
-                                    $row["id_Sede"] = "Aguascalientes";
-                                    break;
-                                case 5:
-                                    $row["id_Sede"] = "Guadalajara";
-                                    break;
-                                case 6:
-                                    $row["id_Sede"] = "Ciudad UP";
-                                    break;
-                                case 1007:
-                                    $row["id_Sede"] = "Sin Sede";
-                                    break;
-                            }
-                            echo "<li><button class='dropdown-item' type='button' onclick='selectOption(\"" . $row["id_Sede"] . "\", \"dropdownSedeButton\")'>" . $row["id_Sede"] . "</button></li>";
+                            echo "<li><button class='dropdown-item' type='button' onclick='selectOption(\"" . $row["Nombre"] . "\", \"categoryInput\", \"dropdownSedeButton\")'>" . $row["Nombre"] . "</button></li>";
                         }
                     } else {
-                        echo "<li><button class='dropdown-item' type='button'>No hay sedes disponibles</button></li>";
+                        echo "<li><button class='dropdown-item' type='button'>No hay categorías disponibles</button></li>";
                     }
                     ?>
                 </ul>
+                <!-- Campo oculto para almacenar el valor seleccionado -->
+                <input type="hidden" id="sedeInput" value="">
             </div>
             
             <div class="input-group mb-3">
@@ -109,19 +96,20 @@ $result_categoria = $conn->query($categoria);
                     <?php
                     if ($result_categoria->num_rows > 0) {
                         while ($row = $result_categoria->fetch_assoc()) {
-                            echo "<li><button class='dropdown-item' type='button' onclick='selectOption(\"" . $row["Nombre"] . "\", \"dropdownCategoryButton\")'>" . $row["Nombre"] . "</button></li>";
+                            echo "<li><button class='dropdown-item' type='button' onclick='selectOption(\"" . $row["Nombre"] . "\", \"categoryInput\", \"dropdownCategoryButton\")'>" . $row["Nombre"] . "</button></li>";
                         }
                     } else {
                         echo "<li><button class='dropdown-item' type='button'>No hay categorías disponibles</button></li>";
                     }
                     ?>
                 </ul>
+                <!-- Campo oculto para almacenar el valor seleccionado -->
+                <input type="hidden" id="categoryInput" value="">
             </div>
-            <button class="btn btn-gold mb-3">
-                <!-- <input class="btn btn-gold" type="submit" value="Buscar"> -->
-                <i class="fa-solid fa-magnifying-glass"></i>
-                Buscar
-            </button> 
+            <button type="button" class="btn btn-gold mb-3" onclick="buscar()">
+                <i class="fa-solid fa-magnifying-glass"></i> Buscar
+            </button>
+
         </div>
         <div class="filtros">
             <div class="row">
@@ -149,7 +137,7 @@ $result_categoria = $conn->query($categoria);
         <div>
             <?php include 'components/nav-tabs.php'; ?>
         </div>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="js/Botones.js"></script>
 </body>
