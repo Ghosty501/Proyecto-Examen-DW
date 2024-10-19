@@ -10,9 +10,6 @@ if (!empty($_POST)) {
     $talent = $_POST['talent'] ?? [];
     $sede = $_POST['sede'] ?? [];
 
-    $totalDuracion = 0;
-    $totalSesiones = 0;
-
     // Build the query based on filters
     $query = "SELECT asesoria.ID, asesoria.Correo, asesoria.Fecha, asesoria.Duracion, categoria.Nombre AS Categoria, asesor.Nombre AS Asesor
               FROM asesoria
@@ -65,31 +62,9 @@ if (!empty($_POST)) {
             echo "<td>" . $row["Categoria"] . "</td>";
             echo "<td>" . $row["Asesor"] . "</td>";
             echo "</tr>";
-
-            $totalDuracion += $row["Duracion"];
-            $totalSesiones++;
         }
 
         echo "</tbody></table>";
-
-        $duracionMedia = $totalSesiones > 0 ? $totalDuracion / $totalSesiones : 0;
-
-        echo "<div class='cinta-resumen mt-3 text-center'>
-                <div class='row'>
-                    <div class='col' id='sesiones'>" . $totalSesiones . "</div>
-                    <div class='col' id='hrs-profesor'>" . $totalDuracion . "</div>
-                    <div class='col' id='duracion-media'>" . number_format($duracionMedia, 2) . "</div>
-                    <div class='col' id='hrs-talent'>0</div> <!-- Assuming you have no data for this -->
-                    <div class='col' id='profesores'>0</div> <!-- Assuming you have no data for this -->
-                </div>
-                <div class='row'>
-                    <div class='col'>Sesiones</div>
-                    <div class='col'>Total Hrs. Profesor</div>
-                    <div class='col'>Duración Media Sesión</div>
-                    <div class='col'>Total Hrs. Talent</div>
-                    <div class='col'>Profesores</div>
-                </div>
-            </div>";
 
     } else {
         echo "<tr><td colspan='6'>No se encontraron resultados</td></tr>";

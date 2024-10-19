@@ -115,26 +115,42 @@ document.getElementById('fechaFin').addEventListener('change', function() {
 function buscar() {
     // Capture all selected filters
     let data = {
+        categoria: selectedFilters.categoria,
         fechaInicio: selectedFilters.fechaInicio,
         fechaFin: selectedFilters.fechaFin,
         talent: selectedFilters.talent,
-        sede: selectedFilters.sede,
-        categoria: selectedFilters.categoria
+        sede: selectedFilters.sede
     };
 
-    // Make the AJAX request
+    // Make the AJAX request to resumen.php for summary statistics
+    $.ajax({
+        url: 'components/resumen.php',
+        method: 'POST',
+        data: data,
+        success: function(response) {
+            // Replace the current summary with the new data
+            document.querySelector('.cinta-resumen').innerHTML = response;
+        },
+        error: function(xhr, status, error) {
+            console.error("Error fetching summary:", error);
+            alert("An error occurred while fetching summary data. Please try again.");
+        }
+    });
+
+    // Make the AJAX request to Resultados.php for detailed results
     $.ajax({
         url: 'Resultados.php',
         method: 'POST',
-        data: data,  // Send the selected filters to the server
+        data: data,
         success: function(response) {
-            // Insert the response (HTML table) into the #resultado div
+            // Replace the current results with the new data
             document.querySelector('#resultado').innerHTML = response;
         },
         error: function(xhr, status, error) {
-            console.error("Error:", error);
-            alert("An error occurred while fetching data. Please try again.");
+            console.error("Error fetching results:", error);
+            alert("An error occurred while fetching results data. Please try again.");
         }
     });
 }
+
 
