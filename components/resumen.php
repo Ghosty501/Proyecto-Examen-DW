@@ -1,21 +1,34 @@
 <?php
-include 'components/sql.php';
+include 'sql.php';
 
-// Definimos variables para los cálculos
-$totalDuracion = 0;
+
+$totalDuracion_ID = 0;
+$totalDuracion_Correo = 0;
+$totalDuracion_Asesor = 0;
 $totalSesiones = 0;
 $duracionMedia = 0;
+$correosUnicos = [];
+$idsUnicos = [];
+$asesoresUnicos = [];
 
-// Verificamos si se han enviado filtros a través del formulario
+
+function convertirMinutosAFormatoHoras($minutosTotales) {
+
+    $horas = floor($minutosTotales / 60); 
+    $minutos = $minutosTotales % 60;      
+    $minutos = sprintf('%02d', $minutos);
+    return $horas . ':' . $minutos;
+}
+
+
 if (!empty($_POST)) {
-    // Recuperamos los filtros del formulario (enviados por POST)
+   
     $categoria = $_POST['categoria'] ?? [];
     $fechaInicio = $_POST['fechaInicio'] ?? '';
     $fechaFin = $_POST['fechaFin'] ?? '';
     $talent = $_POST['talent'] ?? [];
     $sede = $_POST['sede'] ?? [];
 
-    // Construimos la consulta SQL base
     $query = "SELECT asesoria.ID, asesoria.Correo, asesoria.Fecha, asesoria.Duracion, 
                      categoria.Nombre AS Categoria, asesor.Nombre AS Asesor
               FROM asesoria
@@ -23,9 +36,8 @@ if (!empty($_POST)) {
               INNER JOIN asesor ON asesoria_asesor.id_Asesor = asesor.ID
               INNER JOIN categoria ON asesoria.id_Categoria = categoria.ID
               INNER JOIN sede ON asesoria.id_Sede = sede.id_Sede
-              WHERE 1=1"; // Añadimos WHERE 1=1 para facilitar la concatenación de filtros
+              WHERE 1=1"; 
 
-    // Añadimos filtros dinámicos según los valores enviados
     if (!empty($fechaInicio)) {
         $query .= " AND asesoria.Fecha >= STR_TO_DATE('" . $conn->real_escape_string($fechaInicio) . "', '%Y-%m-%d')";
     }
@@ -48,26 +60,37 @@ if (!empty($_POST)) {
     // Calculamos los totales
     if ($result && $result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $totalDuracion += $row["Duracion"];
-            $totalSesiones++;
+            if (!in_array($row["ID"], $idsUnicos)) {
+                $totalDuracion_ID += $row["Duracion"]; // Suma la duración solo la primera vez que se encuentre el ID
+                $idsUnicos[] = $row["ID"]; // Guardamos el ID para evitar duplicados
+                $totalSesiones++;
+            } 
+
+
+            if (!in_array($row["Correo"], $correosUnicos)) {
+                $correosUnicos[] = $row["Correo"];
+                $totalDuracion_Correo += $row["Duracion"];
+            }
+            
+            $totalDuracion_Asesor += $row["Duracion"];
         }
 
-        // Calculamos la duración media
-        $duracionMedia = $totalSesiones > 0 ? $totalDuracion / $totalSesiones : 0;
+
+        $duracionMedia = $totalSesiones > 0 ? $totalDuracion_ID / $totalSesiones : 0;
     }
 }
 
 $conn->close();
 ?>
 
-<!-- Generamos la barra resumen con los resultados filtrados -->
+
 <div class="cinta-resumen mt-3 text-center">
     <div class="row">
         <div class="col" id="sesiones"><?php echo $totalSesiones; ?></div>
-        <div class="col" id="hrs-profesor"><?php echo $totalDuracion; ?></div>
-        <div class="col" id="duracion-media"><?php echo number_format($duracionMedia, 2); ?></div>
-        <div class="col" id="hrs-talent">0</div> <!-- Puedes agregar más lógica si es necesario -->
-        <div class="col" id="profesores">0</div> <!-- Puedes agregar más lógica si es necesario -->
+        <div class="col" id="hrs-talent"><?php echo convertirMinutosAFormatoHoras(round($totalDuracion_Correo)); ?></div>
+        <div class="col" id="duracion-media"><?php echo convertirMinutosAFormatoHoras(round($duracionMedia)); ?></div>
+        <div class="col" id="hrs-profesor"><?php echo convertirMinutosAFormatoHoras(round($totalDuracion_Asesor)); ?></div>
+        <div class="col" id="profesores"><?php echo count($correosUnicos); ?></div> <!-- Mostramos el número de correos únicos -->
     </div>
     <div class="row">
         <div class="col">Sesiones</div>

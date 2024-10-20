@@ -1,16 +1,29 @@
 <?php
 include 'components/sql.php';
 
-// Check if there are POST filters; only then run the query
+// Función para convertir minutos a formato de horas:minutos
+function convertirFormato($minutosTotales) {
+    // Calcula las horas y los minutos
+    $horas = floor($minutosTotales / 60); // Parte entera son las horas
+    $minutos = $minutosTotales % 60;      // El resto son los minutos
+
+    // Aseguramos que los minutos sean siempre dos dígitos
+    $minutos = sprintf('%02d', $minutos);
+
+    // Retornamos el formato de horas:minutos (ej. "3:00")
+    return $horas . ':' . $minutos;
+}
+
+// Verificamos si se han enviado filtros a través del formulario
 if (!empty($_POST)) {
-    // Retrieve the filters from the POST request
+    // Recuperamos los filtros del formulario (enviados por POST)
     $categoria = $_POST['categoria'] ?? [];
     $fechaInicio = $_POST['fechaInicio'] ?? '';
     $fechaFin = $_POST['fechaFin'] ?? '';
     $talent = $_POST['talent'] ?? [];
     $sede = $_POST['sede'] ?? [];
 
-    // Build the query based on filters
+    // Construimos la consulta SQL base
     $query = "SELECT asesoria.ID, asesoria.Correo, asesoria.Fecha, asesoria.Duracion, categoria.Nombre AS Categoria, asesor.Nombre AS Asesor
               FROM asesoria
               INNER JOIN asesoria_asesor ON asesoria.ID = asesoria_asesor.id_Asesoria
@@ -19,7 +32,7 @@ if (!empty($_POST)) {
               INNER JOIN sede ON asesoria.id_Sede = sede.id_Sede
               WHERE 1=1"; // Default condition to avoid syntax error
 
-    // Apply filters if they exist
+    // Aplicamos los filtros
     if (!empty($fechaInicio)) {
         $query .= " AND asesoria.Fecha >= STR_TO_DATE('" . $conn->real_escape_string($fechaInicio) . "', '%Y-%m-%d')";
     }
@@ -36,7 +49,7 @@ if (!empty($_POST)) {
         $query .= " AND sede.Nombre IN ('" . implode("','", array_map([$conn, 'real_escape_string'], $sede)) . "')";
     }
 
-    // Execute the query and display the filtered results
+    // Ejecutamos la consulta y mostramos los resultados
     $result = $conn->query($query);
 
     if ($result && $result->num_rows > 0) {
@@ -58,7 +71,8 @@ if (!empty($_POST)) {
             echo "<td>" . $row["ID"] . "</td>";
             echo "<td>" . $row["Correo"] . "</td>";
             echo "<td>" . $row["Fecha"] . "</td>";
-            echo "<td>" . $row["Duracion"] . "</td>";
+            // Convertimos la duración de minutos a formato de horas:minutos
+            echo "<td>" . convertirFormato($row["Duracion"]) . "</td>";
             echo "<td>" . $row["Categoria"] . "</td>";
             echo "<td>" . $row["Asesor"] . "</td>";
             echo "</tr>";
@@ -72,7 +86,6 @@ if (!empty($_POST)) {
 
     $conn->close();
 }
-
 ?>
 
 <div id="resultado" class="mt-3 text-center"></div>
