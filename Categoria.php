@@ -27,7 +27,7 @@ if (!empty($_POST)) {
     $query = "SELECT 
                 categoria.Llave AS `Key`,
                 categoria.Nombre AS Nombre,
-                COUNT(asesoria.ID) AS Sesiones,
+                COUNT(DISTINCT asesoria.ID) AS Sesiones,
                 COUNT(DISTINCT asesoria.Correo) AS Profesores,
                 SUM(asesoria.Duracion) AS TotalHrsProf,
                 SUM(DISTINCT asesoria.Duracion) AS TotalHrsTalent,
