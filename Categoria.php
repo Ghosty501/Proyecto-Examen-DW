@@ -29,10 +29,10 @@ if (!empty($_POST)) {
                 categoria.Nombre AS Nombre,
                 COUNT(DISTINCT asesoria.ID) AS Sesiones,
                 COUNT(DISTINCT asesoria.Correo) AS Profesores,
-                SUM(asesoria.Duracion) AS TotalHrsProf,
-                SUM(DISTINCT asesoria.Duracion) AS TotalHrsTalent,
+                SUM(asesoria.Duracion) AS TotalHrsTalent,
+                SUM(DISTINCT asesoria.Duracion) AS TotalHrsProf,
                 AVG(DISTINCT asesoria.Duracion) AS DuracionMediaProf,
-                AVG(asesoria.Duracion * (SELECT COUNT(id_Asesor) FROM asesoria_asesor WHERE asesoria_asesor.id_Asesoria = asesoria.ID)) AS DuracionMediaTalent
+                AVG(asesoria.Duracion) AS DuracionMediaTalent
                 FROM 
                 asesoria
                 INNER JOIN asesoria_asesor ON asesoria.ID = asesoria_asesor.id_Asesoria
@@ -89,8 +89,8 @@ if (!empty($_POST)) {
             echo "<th class= border-bottom-0>" . $row["Nombre"] . "</th>";
             echo "<td>" . $row["Sesiones"] . "</td>";
             echo "<td>" . $row["Profesores"] . "</td>";
-            echo "<td>" . convertir($totalHrsTalent) . "</td>";
             echo "<td>" . convertir($totalHrsProf) . "</td>";
+            echo "<td>" . convertir($totalHrsTalent) . "</td>";
             echo "<td>" . convertir($duracionMediaProf) . "</td>";
             echo "<td>" . convertir($duracionMediaTalent) . "</td>";
             echo "</tr>";
