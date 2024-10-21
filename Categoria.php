@@ -31,8 +31,8 @@ if (!empty($_POST)) {
                 COUNT(DISTINCT asesoria.Correo) AS Profesores,
                 SUM(asesoria.Duracion) AS TotalHrsTalent,
                 SUM(DISTINCT asesoria.Duracion) AS TotalHrsProf,
-                AVG(DISTINCT asesoria.Duracion) AS DuracionMediaProf,
-                AVG(asesoria.Duracion) AS DuracionMediaTalent
+                (SUM(DISTINCT asesoria.Duracion)) / (COUNT(DISTINCT asesoria.ID)) AS DuracionMediaProf,
+                (SUM(asesoria.Duracion)) / (COUNT(DISTINCT asesoria.ID)) AS DuracionMediaTalent
                 FROM 
                 asesoria
                 INNER JOIN asesoria_asesor ON asesoria.ID = asesoria_asesor.id_Asesoria
