@@ -1,5 +1,5 @@
 <div class="mt-3 tabs">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <ul class="nav nav-tabs border-bottom-0" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="resultados-tab" data-bs-toggle="tab" data-bs-target="#resultados-tab-pane" type="button" role="tab">Resultados</button>
         </li>

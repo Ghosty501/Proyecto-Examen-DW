@@ -26,8 +26,8 @@ $result_categoria = $conn->query($categoria);
     <link rel="stylesheet" href="css/Style.css">
 </head>
 
-<body class="bg-black">
-    <div class="contenedor flex-column bg-black">
+<body>
+    <div class="contenedor flex-column">
         <h1>Dashboard</h1>
         <h3>Filtros</h3>
         <hr>

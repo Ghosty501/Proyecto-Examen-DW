@@ -151,6 +151,21 @@ function buscar() {
             alert("An error occurred while fetching results data. Please try again.");
         }
     });
+
+    // Make the AJAX request to Categoria.php for category statistics
+    $.ajax({
+        url: 'Categoria.php',
+        method: 'POST',
+        data: data,
+        success: function(response) {
+            // Replace the current results with the new data
+            document.querySelector('#categorias').innerHTML = response;
+        },
+        error: function(xhr, status, error) {
+            console.error("Error fetching results:", error);
+            alert("An error occurred while fetching results data. Please try again.");
+        }
+    });
 }
 
 

@@ -24,7 +24,7 @@ if (!empty($_POST)) {
     $sede = $_POST['sede'] ?? [];
 
     // Construimos la consulta SQL base
-    $query = "SELECT asesoria.ID, asesoria.Correo, asesoria.Fecha, asesoria.Duracion, categoria.Nombre AS Categoria, asesor.Nombre AS Asesor
+    $query = "SELECT asesoria.ID, asesoria.Correo, asesoria.Fecha, asesoria.Duracion, categoria.Llave AS Categoria, asesor.Nombre AS Asesor
               FROM asesoria
               INNER JOIN asesoria_asesor ON asesoria.ID = asesoria_asesor.id_Asesoria
               INNER JOIN asesor ON asesoria_asesor.id_Asesor = asesor.ID
@@ -53,7 +53,7 @@ if (!empty($_POST)) {
     $result = $conn->query($query);
 
     if ($result && $result->num_rows > 0) {
-        echo "<table>
+        echo "<table class = 'table table-hover table-dark'>
                 <thead class='table-head'>
                     <tr>
                         <th>ID</th>
@@ -64,7 +64,7 @@ if (!empty($_POST)) {
                         <th>Asesor</th>
                     </tr>
                 </thead>
-                <tbody>";
+                <tbody class = 'table-group-divider'>";
 
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";

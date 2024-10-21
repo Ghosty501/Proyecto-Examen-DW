@@ -1,12 +1,43 @@
+body{
+    background-color: #1B1B1B;
+}
+h1{
+    color: #A77F49;
+    font-weight: bold;
+    padding: 10px;
+}
+
+h3{
+    color: white;    
+    font-weight: bold;
+    padding: 10px;
+    padding-bottom: 0px;
+    margin: 0px;
+}
+
+hr{
+    border: 2px solid #6A6F74;
+}
+
+th{
+    color: #A77F49 !important;
+    background-color: #1B1B1B !important;
+}
+
+td{
+    color: white !important;
+    background-color: #1B1B1B !important;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #3e3e3e !important;
+}
+
 .contenedor {
     position: relative;
     height: 100vh;
     width: 100vw;
     padding: 20px;
-    background-color: #1B1B1B;
-}
-
-.bg-black{
     background-color: #1B1B1B;
 }
 
@@ -42,7 +73,8 @@
     background-color: #3e3e3e;
     color: white;
     font-weight: bold;
-    border-radius: 50px;
+    border-top-right-radius: 50px !important;
+    border-bottom-right-radius: 50px !important;
     border: 0px;
 }
 
@@ -66,11 +98,6 @@
     color: white;
 }
 
-.table-head{
-    color: #A77F49;
-    font-weight: bold;
-}
-
 .nav-tabs .nav-link {
     color: white; 
     
@@ -82,22 +109,4 @@
     background-color: #1B1B1B;
     border: 1px solid transparent;
     
-}
-
-h1{
-    color: #A77F49;
-    font-weight: bold;
-    padding: 10px;
-}
-
-h3{
-    color: white;    
-    font-weight: bold;
-    padding: 10px;
-    padding-bottom: 0px;
-    margin: 0px;
-}
-
-hr{
-    border: 2px solid #6A6F74;
 }
